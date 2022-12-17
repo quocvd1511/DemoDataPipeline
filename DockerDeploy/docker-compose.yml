@@ -1,0 +1,83 @@
+version: "2"
+services:
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    depends_on:
+      - "kafka"
+  kafka:
+    image: obsidiandynamics/kafka
+    restart: "no"
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT: "6000"
+      KAFKA_RESTART_ATTEMPTS: "10"
+      KAFKA_RESTART_DELAY: "5"
+      ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
+      
+  cassandra:
+    image: docker.io/bitnami/cassandra:3.9-r7
+    ports:
+      - '7000:7000'
+      - '9042:9042' 
+    volumes:
+      - 'cassandra_data:/bitnami'
+    environment:
+      - CASSANDRA_SEEDS=cassandra
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_PASSWORD=cassandra
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  cassandra_data:
+    driver: local
+
+
+# CREATE KEYSPACE admintome WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3'}  AND durable_writes = true;
+
+# CREATE TABLE nhom3.logs (
+#     Postal_code int,
+#     Category text,
+#     Sub_category text,
+#     Product_Group text,
+#     Product_Name text,
+#       Package_price float,
+#       Price_per_unit text,
+#       package_size text,
+#       is_estimated int,
+#       is_special int,
+#       in_stock text,
+#       Retail_price text,
+#       Product_Url text,
+#       Brand text,
+#       Sku text,
+#       RunDate timestamp,
+#       unit_price float,
+#       unit_price_unit text,
+#       state text,
+#       city text,
+#       tid text,      
+#     PRIMARY KEY (tid)
+# )
+
+
+# CREATE KEYSPACE nhom3clouds WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3'}  AND durable_writes = true;
+
+# CREATE TABLE bigbasket(index int,product text,category text,sub_category text,brand text,sale_price float,market_price float,type text,rating float,description text,PRIMARY KEY (index))

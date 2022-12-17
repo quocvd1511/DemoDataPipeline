@@ -1,0 +1,2 @@
+CREATE KEYSPACE nhom3clouds WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };
+CREATE TABLE nhom3clouds.bigbasket(uuid uuid PRIMARY KEY,id int,product text,category text,sub_category text,brand text,sale_price double,market_price double,type_ text,rating double,description text);

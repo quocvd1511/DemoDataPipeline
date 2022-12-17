@@ -1,0 +1,2 @@
+cd /CloudComputing/spark-2.4.1-bin-hadoop2.6/bin
+./spark-shell --packages "org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,com.datastax.spark:spark-cassandra-connector_2.11:2.4.3,com.datastax.cassandra:cassandra-driver-core:4.0.0" -i ../../StreamHandler.scala
