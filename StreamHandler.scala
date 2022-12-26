@@ -56,7 +56,7 @@ val summaryWithIDs = expandedDF.withColumn("uuid", makeUUID())
 // write dataframe to Cassandra
 val query = summaryWithIDs
 	.writeStream
-	.trigger(Trigger.ProcessingTime("5 seconds"))
+	.trigger(Trigger.ProcessingTime("1 seconds"))
 	.foreachBatch { (batchDF: DataFrame, batchID: Long) =>
 		println(s"Writing to Cassandra batchID $batchID")
 		// batchDF.show(false)
